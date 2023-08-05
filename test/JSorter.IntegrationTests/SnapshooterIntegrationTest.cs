@@ -11,7 +11,7 @@ public class SnapshooterIntegrationTest
     [Test]
     public void SnapshooterIntegration()
     {
-        var jTest = JObject.Parse(File.ReadAllText("Json/JsonToCompare.json"));
+        var jTest = JObject.Parse(File.ReadAllText("Json/fhirExample.json"));
 
         jTest = jTest.Sort();
         Snapshot.Match(jTest);

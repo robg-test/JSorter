@@ -19,7 +19,7 @@
 
 
     <ItemGroup>
-      <None Update="Json\JsonToCompare.json">
+      <None Update="Json\fhirExample.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
