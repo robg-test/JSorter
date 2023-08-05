@@ -2,10 +2,12 @@
 using System.Runtime.CompilerServices;
 using JSorter.Configuration;
 using JSorter.Deconstructor.Objects;
+using JSorter.Sorter;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 [assembly: InternalsVisibleTo("JSorter.Test")]
+
 namespace JSorter.Deconstructor;
 
 internal class JsonDeconstrcutor
@@ -74,30 +76,24 @@ internal class JsonDeconstrcutor
         {
             if (inToken.Type == JTokenType.Object)
             {
-                var jObjectArrayKey = "";
-                if (inToken.SelectToken(_configuration.ArrayObjectsSortingPath) != null)
-                {
-                    jObjectArrayKey = inToken.SelectToken(_configuration.ArrayObjectsSortingPath)!.ToString();
-                }
-
-                deconstructedJArray.JArrayElements.Add(new KeyValuePair<string, object>(
-                    jObjectArrayKey,
-                    (DeconstructedJObject)Deconstruct(inToken)));
+                deconstructedJArray.JArrayElements.Add(
+                    new JArraySortableElement((DeconstructedJObject)Deconstruct(inToken),
+                        _configuration.SortArrayObjectBy));
             }
 
             else if (inToken.Type == JTokenType.Array)
             {
-                deconstructedJArray.JArrayElements.Add(new KeyValuePair<string, object>("",
+                deconstructedJArray.JArrayElements.Add(new JArraySortableElement(
                     (DeconstructedJArray)Deconstruct(inToken)));
             }
 
             else
             {
-                deconstructedJArray.JArrayElements.Add(new KeyValuePair<string, object>(
-                    GetJValueSortingValue((JValue)inToken.Value<object>()!),
+                deconstructedJArray.JArrayElements.Add(new JArraySortableElement(
                     (JValue)inToken.Value<object>()!));
             }
         }
+
         return deconstructedJArray;
     }
 
@@ -118,20 +114,7 @@ internal class JsonDeconstrcutor
 
     public IDeconstructedJToken Deconstruct(string json)
     {
-        try
-        {
-            var token = JToken.Parse(json);
-            return Deconstruct(token);
-        }
-        catch (Exception e)
-        {
-            throw new Exception($"Could not load string as JSON - {e.Message}");
-        }
-    }
-    private static string GetJValueSortingValue(JValue jValue)
-    {
-        return jValue.Type == JTokenType.String
-            ? jValue.ToString(CultureInfo.InvariantCulture)
-            : jValue.ToString(Formatting.None);
+        var token = JToken.Parse(json);
+        return Deconstruct(token);
     }
 }

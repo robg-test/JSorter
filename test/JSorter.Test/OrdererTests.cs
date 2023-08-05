@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Globalization;
+using FluentAssertions;
 using JSorter.Configuration;
 using JSorter.Deconstructor;
 using JSorter.Deconstructor.Objects;
@@ -58,11 +59,11 @@ public class OrdererTests
         var orderer = new JSorterOrderer(deconstructedJson, configuration);
         orderer.Sort();
         var listOfElements = ((DeconstructedJArray)orderer.SortedJson!).JArrayElements;
-        listOfElements[0].Value.ToString().Should().Be("1");
-        listOfElements[1].Value.ToString().Should().Be("1.03");
-        listOfElements[2].Value.ToString().Should().Be("a");
-        listOfElements[3].Value.ToString().Should().Be("b");
-        listOfElements[4].Value.ToString().Should().Be("True");
+        listOfElements[0].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("1");
+        listOfElements[1].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("1.03");
+        listOfElements[2].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("a");
+        listOfElements[3].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("b");
+        listOfElements[4].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("True");
     }
 
     [Test]
@@ -73,8 +74,8 @@ public class OrdererTests
         var deconstructedJson =  deconstructor.Deconstruct(json);
         var orderer = new JSorterOrderer(deconstructedJson);
         orderer.Sort();
-        ((DeconstructedJArray)orderer.SortedJson!).JArrayElements[0].Value.ToString().Should().Be("b");
-        ((DeconstructedJArray)orderer.SortedJson!).JArrayElements[1].Value.ToString().Should().Be("a");
+        ((DeconstructedJArray)orderer.SortedJson!).JArrayElements[0].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("b");
+        ((DeconstructedJArray)orderer.SortedJson!).JArrayElements[1].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("a");
     }
 
     [Test]
@@ -82,7 +83,6 @@ public class OrdererTests
     {
         var conf = new JSorterConfiguration()
         {
-            ArrayObjectsSortingPath = "id",
             SortPrimitiveValuesInArrays = true
         };
         const string json = @"[ { ""id"" : ""b""}, { ""id"" : ""a""}]";
@@ -90,9 +90,9 @@ public class OrdererTests
         var deconstructedJson = deconstructor.Deconstruct(json);
         var orderer = new JSorterOrderer(deconstructedJson);
         orderer.Sort();
-        var elements = ((DeconstructedJArray)orderer.SortedJson!).JArrayElements.Select(c => c.Value).ToList();
-        ((DeconstructedJObject)elements[0]).ObjectsJProperties![0].JValue!.Value.Should().Be("a");
-        ((DeconstructedJObject)elements[1]).ObjectsJProperties![0].JValue!.Value.Should().Be("b");
+        var elements = ((DeconstructedJArray)orderer.SortedJson!).JArrayElements.Select(c => c.jObject).ToList();
+        elements[0]!.ObjectsJProperties![0].JValue!.Value.Should().Be("a");
+        elements[1]!.ObjectsJProperties![0].JValue!.Value.Should().Be("b");
     }
 
     [TestCase(@"[ { ""not-id"" : ""a""}, { ""not-id"" : ""b""}]")]
@@ -101,35 +101,34 @@ public class OrdererTests
     {
         var conf = new JSorterConfiguration()
         {
-            ArrayObjectsSortingPath = "id",
             SortPrimitiveValuesInArrays = true
         };
         var deconstructor = new JsonDeconstrcutor(conf); 
         var deconstructedJson = deconstructor.Deconstruct(json);
         var orderer = new JSorterOrderer(deconstructedJson);
         orderer.Sort();
-        var elements = ((DeconstructedJArray)orderer.SortedJson!).JArrayElements.Select(c => c.Value).ToList();
-        ((DeconstructedJObject)elements[0]).ObjectsJProperties![0].JValue!.Value.Should().Be("a");
-        ((DeconstructedJObject)elements[1]).ObjectsJProperties![0].JValue!.Value.Should().Be("b");
+        var elements = ((DeconstructedJArray)orderer.SortedJson!).JArrayElements.Select(c => c.jObject).ToList();
+        elements[0]!.ObjectsJProperties![0].JValue!.Value.Should().Be("a");
+        elements[1]!.ObjectsJProperties![0].JValue!.Value.Should().Be("b");
         
     }
 
-    [TestCase(@"[ { ""not-id"" : ""a""}, { ""id"" : ""b""}]")]
-    [TestCase(@"[ { ""id"" : ""b""}, { ""not-id"" : ""a""} ]")]
+    [TestCase(@"[ { ""aid"" : ""a""}, { ""id"" : ""b""}]")]
+    [TestCase(@"[ { ""id"" : ""b""}, { ""aid"" : ""a""} ]")]
     public void OrderArrayWithObjectWithSortingElementsWithPrecedenceOverMissingKey(string json)
     {
         var conf = new JSorterConfiguration()
         {
-            ArrayObjectsSortingPath = "id",
-            SortPrimitiveValuesInArrays = true
+            SortPrimitiveValuesInArrays = true,
+            SortArrayObjectBy = new List<string>() { "id" }
         };
         var deconstructor = new JsonDeconstrcutor(conf); 
         var deconstructedJson = deconstructor.Deconstruct(json);
         var orderer = new JSorterOrderer(deconstructedJson);
         orderer.Sort();
-        var elements = ((DeconstructedJArray)orderer.SortedJson!).JArrayElements.Select(c => c.Value).ToList();
-        ((DeconstructedJObject)elements[0]).ObjectsJProperties![0].JValue!.Value.Should().Be("b");
-        ((DeconstructedJObject)elements[1]).ObjectsJProperties![0].JValue!.Value.Should().Be("a");
+        var elements = ((DeconstructedJArray)orderer.SortedJson!).JArrayElements.Select(c => c.jObject).ToList();
+        elements[0]!.ObjectsJProperties![0].JValue!.Value.Should().Be("b");
+        elements[1]!.ObjectsJProperties![0].JValue!.Value.Should().Be("a");
     }
  
     [TestCase(@"[[],{},3]")]

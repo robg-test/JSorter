@@ -4,6 +4,7 @@ using JSorter.Deconstructor.Objects;
 using Newtonsoft.Json.Linq;
 
 [assembly: InternalsVisibleTo("JSorter.Test")]
+
 namespace JSorter.Sorter;
 
 internal class JSorterOrderer
@@ -65,39 +66,45 @@ internal class JSorterOrderer
         array.JArrayElements.Sort(JArrayValueSorter);
         return array;
     }
+
 //TODO - Rewrite the KVP usage it requires digging to understand, and we can make it more verbose with an object.
-    private int JArrayValueSorter(KeyValuePair<string, object> x, KeyValuePair<string, object> y)
+    private int JArrayValueSorter(JArraySortableElement x, JArraySortableElement y)
     {
-        if (x.Key == "" && y.Key == "")
+        if (x.SortingPriority != y.SortingPriority)
         {
-            return SortJsonElementsWithNoKey(x, y);
+            return x.SortingPriority - y.SortingPriority;
         }
-        if (x.Key == "") return 1;
-        if (x.Value.GetType() == typeof(JValue) && Configuration.SortPrimitiveValuesInArrays)
+
+        if (x.jObject != null && y.jObject != null)
         {
-            return string.Compare(x.Value.ToString(), y.Value.GetType() == typeof(JValue) ? y.Value.ToString() : y.Key, StringComparison.CurrentCulture);
+            x.jObject = SortObject(x.jObject);
+            y.jObject = SortObject(y.jObject);
+            return string.Compare(x.SortingValue, y.SortingValue, StringComparison.CurrentCulture);
+            
         }
-        if (y.Key == "") return -1;
-        if (x.Value.GetType() != typeof(JValue) || Configuration.SortPrimitiveValuesInArrays)
-            return string.Compare(x.Key, y.Key, StringComparison.CurrentCulture);
-        if (y.Value.GetType() == typeof(JValue) || y.Key == "")
+
+        if (x.jValueToSort != null && y.jValueToSort != null)
+        {
+            if (Configuration.SortPrimitiveValuesInArrays)
+            {
+                return string.Compare(x.SortingValue, y.SortingValue, StringComparison.CurrentCulture);
+            }
+
+            return 0;
+        }
+
+        //No need to sort inner arrays (yet)
+        if (x.jArrayToSort != null && y.jArrayToSort != null)
         {
             return 0;
         }
-        //Quite a bit of behaviour on this line - By default if primitives aren't sorted then primitive values will be at the bottom of the array
-        //In the scenario where we have values and arrays or objects in the JArray
-        return -1;
+
+        return 0;
     }
 
-    private static int SortJsonElementsWithNoKey(KeyValuePair<string, object> x, KeyValuePair<string, object> y)
+    private static int SortJsonsObjects(JArraySortableElement x, JArraySortableElement y)
     {
-        if (x.Value.GetType() == typeof(DeconstructedJObject) && y.Value.GetType() == typeof(DeconstructedJObject))
-        {
-            var deconstructedObjectX = (DeconstructedJObject)x.Value;
-            var deconstructedObjectY = (DeconstructedJObject)y.Value;
-            return string.Compare(deconstructedObjectX.OriginalJToken.ToString(),
-                deconstructedObjectY.OriginalJToken.ToString(), StringComparison.CurrentCulture);
-        }
-        return 0;
+        return string.Compare(x.SortingValue,
+            y.SortingValue, StringComparison.CurrentCulture);
     }
 }

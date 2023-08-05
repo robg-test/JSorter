@@ -1,15 +1,16 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using JSorter.Sorter;
+using Newtonsoft.Json.Linq;
 
 namespace JSorter.Deconstructor.Objects;
 
 internal class DeconstructedJArray : IDeconstructedJToken
 {
-    public readonly List<KeyValuePair<string, object>> JArrayElements; 
+    public List<JArraySortableElement> JArrayElements { get; set; } 
     public JToken OriginalJToken { get; set; }
 
     public DeconstructedJArray(JToken jToken)
     {
-        this.JArrayElements = new List<KeyValuePair<string, object>>();
         this.OriginalJToken = jToken;
+        JArrayElements = new List<JArraySortableElement>();
     }
 }

@@ -27,7 +27,6 @@ public class ExtensionTest
         var jObject = new JObject();
         _ = jObject.Sort(new JSorterConfiguration 
         {
-            ArrayObjectsSortingPath = "test",
            SortPrimitiveValuesInArrays = true
         });
     }
@@ -38,7 +37,6 @@ public class ExtensionTest
         var jArray = new JArray();
         _ = jArray.Sort(new JSorterConfiguration
         {
-            ArrayObjectsSortingPath = "test",
             SortPrimitiveValuesInArrays = true
         });
     }

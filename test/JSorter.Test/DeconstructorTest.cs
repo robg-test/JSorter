@@ -55,9 +55,9 @@ public class DeconstructorTest
         var jsonUnderTest = JArray.Parse(jArray);
         var deconstructor = new JsonDeconstrcutor();
         var deconstructedJson = (DeconstructedJArray)deconstructor.Deconstruct(jsonUnderTest);
-        deconstructedJson.JArrayElements[0].Value.ToString().Should().Be("1");
-        deconstructedJson.JArrayElements[1].Value.ToString().Should().Be("2");
-        deconstructedJson.JArrayElements[2].Value.ToString().Should().Be("3");
+        deconstructedJson.JArrayElements[0].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("1");
+        deconstructedJson.JArrayElements[1].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("2");
+        deconstructedJson.JArrayElements[2].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("3");
     }
 
     [Test]
@@ -67,7 +67,7 @@ public class DeconstructorTest
         var jsonUnderTest = JArray.Parse(jArray);
         var deconstructor = new JsonDeconstrcutor();
         var deconstructedJson = (DeconstructedJArray)deconstructor.Deconstruct(jsonUnderTest);
-        ((DeconstructedJObject)deconstructedJson.JArrayElements[0].Value).ObjectsJProperties![0].JValue!
+        deconstructedJson.JArrayElements[0].jObject!.ObjectsJProperties![0].JValue!
             .ToString(CultureInfo.InvariantCulture).Should().Be("b");
     }
 
@@ -78,9 +78,9 @@ public class DeconstructorTest
         var jsonUnderTest = JArray.Parse(jArray);
         var deconstructor = new JsonDeconstrcutor();
         var deconstructedJson = (DeconstructedJArray)deconstructor.Deconstruct(jsonUnderTest);
-        var primaryArray = (DeconstructedJArray)deconstructedJson.JArrayElements[0].Value;
-        var innerValue = primaryArray.JArrayElements[0].Value;
-        innerValue.ToString().Should().Be("1");
+        var primaryArray = deconstructedJson.JArrayElements[0].jArrayToSort;
+        var innerValue = primaryArray!.JArrayElements[0].jValueToSort;
+        innerValue!.Value!.ToString().Should().Be("1");
     }
 
     [Test]
@@ -90,9 +90,12 @@ public class DeconstructorTest
         var jsonUnderTest = JObject.Parse(jObject);
         var deconstructor = new JsonDeconstrcutor();
         var deconstructedJson = (DeconstructedJObject)deconstructor.Deconstruct(jsonUnderTest);
-        deconstructedJson.ObjectsJProperties![0].PropertyJArray!.JArrayElements[0].Value.ToString().Should().Be("1");
-        deconstructedJson.ObjectsJProperties![0].PropertyJArray!.JArrayElements[1].Value.ToString().Should().Be("2");
-        deconstructedJson.ObjectsJProperties![0].PropertyJArray!.JArrayElements[2].Value.ToString().Should().Be("3");
+        deconstructedJson.ObjectsJProperties![0].PropertyJArray!.JArrayElements[0].jValueToSort!
+            .ToString(CultureInfo.CurrentCulture).Should().Be("1");
+        deconstructedJson.ObjectsJProperties![0].PropertyJArray!.JArrayElements[1].jValueToSort!.
+            ToString(CultureInfo.CurrentCulture).Should().Be("2");
+        deconstructedJson.ObjectsJProperties![0].PropertyJArray!.JArrayElements[2].jValueToSort!.
+            ToString(CultureInfo.CurrentCulture).Should().Be("3");
     }
 
     //We need to handle strings if a user passes in a string its interpreted as a JValue, attempting to interpret the string is possibly the best workaround for this
