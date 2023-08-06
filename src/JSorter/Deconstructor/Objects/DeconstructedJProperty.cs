@@ -13,5 +13,5 @@ internal class DeconstructedJProperty : IDeconstructedJToken
     }
 
     public JToken OriginalJToken { get; set; }
-    public string? TextualKey { get; set; }
+    public string? TextualKey { get; init; }
 }

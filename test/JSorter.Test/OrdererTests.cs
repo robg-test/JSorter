@@ -59,11 +59,11 @@ public class OrdererTests
         var orderer = new JSorterOrderer(deconstructedJson, configuration);
         orderer.Sort();
         var listOfElements = ((DeconstructedJArray)orderer.SortedJson!).JArrayElements;
-        listOfElements[0].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("1");
-        listOfElements[1].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("1.03");
-        listOfElements[2].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("a");
-        listOfElements[3].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("b");
-        listOfElements[4].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("True");
+        listOfElements[0].JValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("1");
+        listOfElements[1].JValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("1.03");
+        listOfElements[2].JValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("a");
+        listOfElements[3].JValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("b");
+        listOfElements[4].JValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("True");
     }
 
     [Test]
@@ -74,8 +74,8 @@ public class OrdererTests
         var deconstructedJson =  deconstructor.Deconstruct(json);
         var orderer = new JSorterOrderer(deconstructedJson);
         orderer.Sort();
-        ((DeconstructedJArray)orderer.SortedJson!).JArrayElements[0].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("b");
-        ((DeconstructedJArray)orderer.SortedJson!).JArrayElements[1].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("a");
+        ((DeconstructedJArray)orderer.SortedJson!).JArrayElements[0].JValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("b");
+        ((DeconstructedJArray)orderer.SortedJson!).JArrayElements[1].JValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("a");
     }
 
     [Test]
@@ -90,7 +90,7 @@ public class OrdererTests
         var deconstructedJson = deconstructor.Deconstruct(json);
         var orderer = new JSorterOrderer(deconstructedJson);
         orderer.Sort();
-        var elements = ((DeconstructedJArray)orderer.SortedJson!).JArrayElements.Select(c => c.jObject).ToList();
+        var elements = ((DeconstructedJArray)orderer.SortedJson!).JArrayElements.Select(c => c.JObjectToSort).ToList();
         elements[0]!.ObjectsJProperties![0].JValue!.Value.Should().Be("a");
         elements[1]!.ObjectsJProperties![0].JValue!.Value.Should().Be("b");
     }
@@ -107,7 +107,7 @@ public class OrdererTests
         var deconstructedJson = deconstructor.Deconstruct(json);
         var orderer = new JSorterOrderer(deconstructedJson);
         orderer.Sort();
-        var elements = ((DeconstructedJArray)orderer.SortedJson!).JArrayElements.Select(c => c.jObject).ToList();
+        var elements = ((DeconstructedJArray)orderer.SortedJson!).JArrayElements.Select(c => c.JObjectToSort).ToList();
         elements[0]!.ObjectsJProperties![0].JValue!.Value.Should().Be("a");
         elements[1]!.ObjectsJProperties![0].JValue!.Value.Should().Be("b");
         
@@ -126,7 +126,7 @@ public class OrdererTests
         var deconstructedJson = deconstructor.Deconstruct(json);
         var orderer = new JSorterOrderer(deconstructedJson);
         orderer.Sort();
-        var elements = ((DeconstructedJArray)orderer.SortedJson!).JArrayElements.Select(c => c.jObject).ToList();
+        var elements = ((DeconstructedJArray)orderer.SortedJson!).JArrayElements.Select(c => c.JObjectToSort).ToList();
         elements[0]!.ObjectsJProperties![0].JValue!.Value.Should().Be("b");
         elements[1]!.ObjectsJProperties![0].JValue!.Value.Should().Be("a");
     }

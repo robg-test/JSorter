@@ -54,19 +54,19 @@ internal class JsonConstructor
         var jArray = new JArray();
         foreach (var i in jPropPropertyJArray.JArrayElements)
         {
-            if (i.jObject != null)
+            if (i.JObjectToSort != null)
             {
-                jArray.Add(new JObject(ConstructJObject(i.jObject)));
+                jArray.Add(new JObject(ConstructJObject(i.JObjectToSort)));
             }
 
-            if (i.jValueToSort != null)
+            if (i.JValueToSort != null)
             {
-                jArray.Add(i.jValueToSort);
+                jArray.Add(i.JValueToSort);
             }
 
-            if (i.jArrayToSort != null)
+            if (i.JArrayToSort != null)
             {
-                jArray.Add(new JArray(ConstructJArray(i.jArrayToSort)));
+                jArray.Add(new JArray(ConstructJArray(i.JArrayToSort)));
             }
         }
         return jArray;

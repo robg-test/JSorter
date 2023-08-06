@@ -55,9 +55,9 @@ public class DeconstructorTest
         var jsonUnderTest = JArray.Parse(jArray);
         var deconstructor = new JsonDeconstrcutor();
         var deconstructedJson = (DeconstructedJArray)deconstructor.Deconstruct(jsonUnderTest);
-        deconstructedJson.JArrayElements[0].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("1");
-        deconstructedJson.JArrayElements[1].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("2");
-        deconstructedJson.JArrayElements[2].jValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("3");
+        deconstructedJson.JArrayElements[0].JValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("1");
+        deconstructedJson.JArrayElements[1].JValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("2");
+        deconstructedJson.JArrayElements[2].JValueToSort!.ToString(CultureInfo.CurrentCulture).Should().Be("3");
     }
 
     [Test]
@@ -67,7 +67,7 @@ public class DeconstructorTest
         var jsonUnderTest = JArray.Parse(jArray);
         var deconstructor = new JsonDeconstrcutor();
         var deconstructedJson = (DeconstructedJArray)deconstructor.Deconstruct(jsonUnderTest);
-        deconstructedJson.JArrayElements[0].jObject!.ObjectsJProperties![0].JValue!
+        deconstructedJson.JArrayElements[0].JObjectToSort!.ObjectsJProperties![0].JValue!
             .ToString(CultureInfo.InvariantCulture).Should().Be("b");
     }
 
@@ -78,8 +78,8 @@ public class DeconstructorTest
         var jsonUnderTest = JArray.Parse(jArray);
         var deconstructor = new JsonDeconstrcutor();
         var deconstructedJson = (DeconstructedJArray)deconstructor.Deconstruct(jsonUnderTest);
-        var primaryArray = deconstructedJson.JArrayElements[0].jArrayToSort;
-        var innerValue = primaryArray!.JArrayElements[0].jValueToSort;
+        var primaryArray = deconstructedJson.JArrayElements[0].JArrayToSort;
+        var innerValue = primaryArray!.JArrayElements[0].JValueToSort;
         innerValue!.Value!.ToString().Should().Be("1");
     }
 
@@ -90,11 +90,11 @@ public class DeconstructorTest
         var jsonUnderTest = JObject.Parse(jObject);
         var deconstructor = new JsonDeconstrcutor();
         var deconstructedJson = (DeconstructedJObject)deconstructor.Deconstruct(jsonUnderTest);
-        deconstructedJson.ObjectsJProperties![0].PropertyJArray!.JArrayElements[0].jValueToSort!
+        deconstructedJson.ObjectsJProperties![0].PropertyJArray!.JArrayElements[0].JValueToSort!
             .ToString(CultureInfo.CurrentCulture).Should().Be("1");
-        deconstructedJson.ObjectsJProperties![0].PropertyJArray!.JArrayElements[1].jValueToSort!.
+        deconstructedJson.ObjectsJProperties![0].PropertyJArray!.JArrayElements[1].JValueToSort!.
             ToString(CultureInfo.CurrentCulture).Should().Be("2");
-        deconstructedJson.ObjectsJProperties![0].PropertyJArray!.JArrayElements[2].jValueToSort!.
+        deconstructedJson.ObjectsJProperties![0].PropertyJArray!.JArrayElements[2].JValueToSort!.
             ToString(CultureInfo.CurrentCulture).Should().Be("3");
     }
 

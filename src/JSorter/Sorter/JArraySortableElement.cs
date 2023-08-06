@@ -7,22 +7,22 @@ namespace JSorter.Sorter;
 
 internal class JArraySortableElement
 {
-    public int SortingPriority;
-    public string? SortingValue;
-    public DeconstructedJArray? jArrayToSort;
-    public DeconstructedJObject? jObject;
-    public JValue? jValueToSort;
+    public readonly int SortingPriority;
+    public readonly string? SortingValue;
+    public DeconstructedJArray? JArrayToSort;
+    public DeconstructedJObject? JObjectToSort;
+    public JValue? JValueToSort;
 
     public JArraySortableElement(DeconstructedJArray a)
     {
         this.SortingPriority = int.MaxValue;
         SortingValue = null;
-        jArrayToSort = a;
+        JArrayToSort = a;
     }
 
     public JArraySortableElement(DeconstructedJObject b, IEnumerable<string> tokenSortList)
     {
-        jObject = b;
+        JObjectToSort = b;
         this.SortingPriority = int.MaxValue;
         var token = (JObject)b.OriginalJToken;
         var listOfTokensToSort = tokenSortList.Select(c => token.SelectToken(c)).ToList();
@@ -44,7 +44,7 @@ internal class JArraySortableElement
     {
         this.SortingPriority = int.MaxValue;
         SortingValue = GetJValueSortingValue(valueToSort);
-        this.jValueToSort = valueToSort;
+        this.JValueToSort = valueToSort;
     }
 
     string GetJValueSortingValue(JValue value)

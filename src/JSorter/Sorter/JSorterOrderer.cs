@@ -1,7 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using JSorter.Configuration;
 using JSorter.Deconstructor.Objects;
-using Newtonsoft.Json.Linq;
 
 [assembly: InternalsVisibleTo("JSorter.Test")]
 
@@ -75,15 +74,15 @@ internal class JSorterOrderer
             return x.SortingPriority - y.SortingPriority;
         }
 
-        if (x.jObject != null && y.jObject != null)
+        if (x.JObjectToSort != null && y.JObjectToSort != null)
         {
-            x.jObject = SortObject(x.jObject);
-            y.jObject = SortObject(y.jObject);
+            x.JObjectToSort = SortObject(x.JObjectToSort);
+            y.JObjectToSort = SortObject(y.JObjectToSort);
             return string.Compare(x.SortingValue, y.SortingValue, StringComparison.CurrentCulture);
             
         }
 
-        if (x.jValueToSort != null && y.jValueToSort != null)
+        if (x.JValueToSort != null && y.JValueToSort != null)
         {
             if (Configuration.SortPrimitiveValuesInArrays)
             {
@@ -94,17 +93,11 @@ internal class JSorterOrderer
         }
 
         //No need to sort inner arrays (yet)
-        if (x.jArrayToSort != null && y.jArrayToSort != null)
+        if (x.JArrayToSort != null && y.JArrayToSort != null)
         {
             return 0;
         }
 
         return 0;
-    }
-
-    private static int SortJsonsObjects(JArraySortableElement x, JArraySortableElement y)
-    {
-        return string.Compare(x.SortingValue,
-            y.SortingValue, StringComparison.CurrentCulture);
     }
 }
