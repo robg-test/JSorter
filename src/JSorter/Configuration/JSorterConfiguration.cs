@@ -10,4 +10,6 @@ public class JSorterConfiguration
    /// An value to sort Objects belonging in an array.
    /// </summary>
    public List<string> SortArrayObjectBy { get; set; } = new();
+
+   public bool SortJsonObjectProperties { get; set; } = true;
 }

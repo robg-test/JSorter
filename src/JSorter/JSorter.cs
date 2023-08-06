@@ -4,7 +4,7 @@ using JSorter.Deconstructor;
 using JSorter.Sorter;
 using Newtonsoft.Json.Linq;
 
-namespace JSorter.Extensions;
+namespace JSorter;
 public static class JSorter
 {
     

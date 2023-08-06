@@ -1,5 +1,5 @@
 using JSorter.Configuration;
-using JSorter.Extensions;
+using JSorter;
 using Newtonsoft.Json.Linq;
 using Snapshooter.NUnit;
 

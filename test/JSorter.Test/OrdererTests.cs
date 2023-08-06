@@ -29,7 +29,30 @@ public class OrdererTests
         ((DeconstructedJObject)orderer.SortedJson!).ObjectsJProperties![2].TextualKey.Should().Be("s1");
         ((DeconstructedJObject)orderer.SortedJson!).ObjectsJProperties![3].TextualKey.Should().Be("s2");
     }
-
+    
+    [Test]
+    public void DoNotOrderPropertiesWhenPropertySortIsDisabled()
+    {
+        const string json = @"{
+            ""s1"":""hello"",
+            ""s2"":""goodbye"",
+            ""b"":true,
+            ""c"":1234    
+         }";
+        var config = new JSorterConfiguration()
+        {
+            SortJsonObjectProperties = false
+        };
+        var deconstructor = new JsonDeconstrcutor(config);
+        var deconstructedJson = deconstructor.Deconstruct(json);
+        var orderer = new JSorterOrderer(deconstructedJson, config);
+        orderer.Sort();
+        ((DeconstructedJObject)orderer.SortedJson!).ObjectsJProperties![0].TextualKey.Should().Be("s1");
+        ((DeconstructedJObject)orderer.SortedJson!).ObjectsJProperties![1].TextualKey.Should().Be("s2");
+        ((DeconstructedJObject)orderer.SortedJson!).ObjectsJProperties![2].TextualKey.Should().Be("b");
+        ((DeconstructedJObject)orderer.SortedJson!).ObjectsJProperties![3].TextualKey.Should().Be("c");
+    }
+    
     [Test]
     public void OrderPropertiesDefaultId()
     {

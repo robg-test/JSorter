@@ -41,8 +41,12 @@ internal class JSorterOrderer
 
     private DeconstructedJObject SortObject(DeconstructedJObject token)
     {
-        token.ObjectsJProperties =
-            token.ObjectsJProperties!.OrderBy(property => property.TextualKey).ToList();
+        if (Configuration.SortJsonObjectProperties)
+        {
+            token.ObjectsJProperties =
+                token.ObjectsJProperties!.OrderBy(property => property.TextualKey).ToList();
+        }
+        
         var jProps = token.ObjectsJProperties;
         foreach (var i in jProps!)
         {
@@ -76,8 +80,11 @@ internal class JSorterOrderer
 
         if (x.JObjectToSort != null && y.JObjectToSort != null)
         {
+            if (!Configuration.SortJsonObjectProperties)
+                return string.Compare(x.SortingValue, y.SortingValue, StringComparison.CurrentCulture);
             x.JObjectToSort = SortObject(x.JObjectToSort);
             y.JObjectToSort = SortObject(y.JObjectToSort);
+
             return string.Compare(x.SortingValue, y.SortingValue, StringComparison.CurrentCulture);
             
         }
