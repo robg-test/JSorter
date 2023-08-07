@@ -7,7 +7,7 @@ Your own code should not be reliant on how things are ordered. Also keep in mind
 
 ## Downloads ##
 
-The latest stable release of JSorter is [available on NuGet](https://www.nuget.org/packages/JSorter/) or can be [downloaded from GitHub](https://github.com/JSorter/Jsorter/releases). 
+The latest stable release of JSorter is [available on NuGet](https://www.nuget.org/packages/RobTest.JSorter/) or can be [downloaded from GitHub](https://github.com/JSorter/Jsorter/releases). 
 
 ## Using JSorter ##
 

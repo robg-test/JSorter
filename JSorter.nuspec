@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <readme>docs/README.md</readme>
+        <dependencies>
+            <group targetFramework="net6.0">
+                <dependency id="NewtonSoft.Json" version="13.0.3" />
+            </group>
+        </dependencies>
+        <id>RobTest.JSorter</id>
+        <version>0.1.0</version>
+        <title>RobTest.JSorter</title>
+        <authors>Robert Gaskin</authors>
+        <owners>Robert Gaskin</owners>
+        <license type="expression">MIT</license>
+        <projectUrl>https://github.com/robg-test/JSorter</projectUrl>
+        <description>Sort all the JSON!</description>
+    </metadata>
+    <files>
+        <file src="src/JSorter/bin/Release/net6.0/JSorter.dll" target="lib\net6.0" />
+        <file src="./readme.md" target="docs\" />
+    </files>
+</package>
