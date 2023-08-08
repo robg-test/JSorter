@@ -1,6 +1,6 @@
 # JSorter #
 
-## ![Nuget](https://img.shields.io/nuget/v/RobTest.JSorter.svg?style=flat)![example workflow](https://github.com/robg-test/JSorter/actions/workflows/dotnet.yml/badge.svg)
+## ![Nuget](https://img.shields.io/nuget/v/RobTest.JSorter.svg?style=flat) ![example workflow](https://github.com/robg-test/JSorter/actions/workflows/dotnet.yml/badge.svg)
 
 Sort all the JSON
 
